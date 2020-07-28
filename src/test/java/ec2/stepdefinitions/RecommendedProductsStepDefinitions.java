@@ -3,9 +3,12 @@ package ec2.stepdefinitions;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import ec2.model.Product;
 import io.restassured.RestAssured;
 import net.serenitybdd.rest.SerenityRest;
+
 import java.util.List;
+
 import static ec2.constants.Constants.*;
 import static net.serenitybdd.rest.SerenityRest.lastResponse;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,15 +28,14 @@ public class RecommendedProductsStepDefinitions {
     @When("^(.*) requests the recommended part numbers list for (.*)$")
     public void requests_the_recommended_part_numbers_list_for(String actor, String partNumber) {
 
-        String body = "{\n" +
-                "\t\"PartNumbers\": [\"" + partNumber + "\"]\n" +
-                "}";
+        Product product = new Product.ProductBuilder(partNumber)
+                .build();
 
         SerenityRest
                 .given()
                 .header(AUTHORIZATION_TYPE, API_KEY_VALUE)
                 .contentType(CONTENT_TYPE)
-                .body(body)
+                .body(product)
                 .when().post(GET_RECOMMENDATIONS_STRING)
                 .then().statusCode(200)
                 .and().body("success", is(true));
@@ -44,24 +46,22 @@ public class RecommendedProductsStepDefinitions {
     public void you_should_see_the_part_numbers(List<String> recommendedList) {
 
         List<String> recommendedListResponse = lastResponse().jsonPath().getList("recommendationsResponse.recommendedPartNumbers");
-
         assertThat(recommendedList).containsAll(recommendedListResponse);
     }
 
 
-    @When("^(.*) requests (.*) recommended part number for (.*)$")
-    public void requests_recommended_part_number_for(String actor, String recommendationsToReturn, String partNumber) {
+    @When("^(.*) requests (\\d+) recommended part number for (.*)$")
+    public void requests_recommended_part_number_for(String actor, int recommendationsToReturn, String partNumber) {
 
-        String body = "{\n" +
-                "\t\"PartNumbers\": [\"" + partNumber + "\"],\n" +
-                "\t\"RecommendationsToReturn\":" + recommendationsToReturn + "\n" +
-                "}";
+        Product product = new Product.ProductBuilder(partNumber)
+                .recommendationsToReturn(recommendationsToReturn)
+                .build();
 
         SerenityRest
                 .given()
                 .header(AUTHORIZATION_TYPE, API_KEY_VALUE)
                 .contentType(CONTENT_TYPE)
-                .body(body)
+                .body(product)
                 .when().post(GET_RECOMMENDATIONS_STRING)
                 .then().statusCode(200)
                 .and().body("success", is(true));
