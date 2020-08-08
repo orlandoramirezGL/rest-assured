@@ -26,7 +26,8 @@ public class Product {
         private String[] partNumbers = new String[1];
         private int recommendationsToReturn;
 
-        public ProductBuilder(String partNumbers) {
+        public ProductBuilder(String partNumbers)
+        {
             this.partNumbers[0] = partNumbers;
         }
 
@@ -41,16 +42,4 @@ public class Product {
             return new Product(this);
         }
     }
-
-    // public Product(String partNumbers)
-    // {
-    //     this.partNumbers[0] = partNumbers;
-    // }
-//
-    // public void setPartNumbers(String[] partNumbers)
-    // {
-    //     this.partNumbers = partNumbers;
-    // }
-
-
 }

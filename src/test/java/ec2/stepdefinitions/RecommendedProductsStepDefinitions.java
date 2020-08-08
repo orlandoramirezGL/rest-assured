@@ -19,6 +19,7 @@ public class RecommendedProductsStepDefinitions {
 
     String url = "https://{{env}}skava-product-recommendations-service.yleo.us/api";
 
+
     @Given("^the environment (.*) is selected$")
     public void the_environment_is_selected(String env) {
         RestAssured.baseURI = url.replace("{{env}}", env);

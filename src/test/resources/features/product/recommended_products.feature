@@ -14,8 +14,11 @@ Feature: Recommended Products
 
     Examples:
       | part number | recommend list                                              |
+      #  env11
       | 3422        | 3573, 25397, 3623, 3056, 3321, 5227, 5626, 3390, 5145, 3282 |
       | 3578        | 3575, 3614, 3602, 3423, 3074, 3560, 3356, 3399, 3318, 3509  |
+      # ext5
+      #| 3422        | 3573, 25397, 3056, 3321, 5227, 5626, 3282, 5145, 3557, 5591 |
 
 
   Scenario Outline: Get recommended part numbers with optional parameter
@@ -25,7 +28,7 @@ Feature: Recommended Products
 
     Examples:
       | part number | recommendations to return | recommend list                                             |
-      | 3423        | 4                         | 3614, 3575, 3578, 3399, 3405, 3356, 3743, 3602, 3389, 3409 |
+      | 3423        | 0                         | 3614, 3575, 3578, 3399, 3405, 3356, 3743, 3602, 3389, 3409 |
 
 
   Scenario: Get recommended part numbers with invalid member
